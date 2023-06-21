@@ -6,8 +6,9 @@ class StockLot(models.Model):
 
     def _get_next_serial(self, company, product):
         tmpl = product.product_tmpl_id
-        print(tmpl)
         if tmpl.detailed_type == 'motorcycle':
+            if tmpl.tracking == "none":
+                return False
             make = tmpl.make[:2].upper()
             model = tmpl.model[:2].upper()
             year = tmpl.year%100

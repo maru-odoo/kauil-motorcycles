@@ -8,8 +8,9 @@ class Picking(models.Model):
         if not super(Picking, self).button_validate():
             return False
 
-        if self.product_id.product_tmpl_id.detailed_type == 'motorcycle':
-            # TODO: Acquire VIN from stock lot
-            self.env['motorcycle.registry'].create({"vin": ""})
+        for move in self.move_ids:
+            for lot in move.lot_ids:
+                if lot.product_id.product_tmpl_id.detailed_type == 'motorcycle':
+                    self.env['motorcycle.registry'].create({"vin": lot.name})
 
         return True

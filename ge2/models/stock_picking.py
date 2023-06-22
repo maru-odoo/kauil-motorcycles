@@ -9,7 +9,8 @@ class Picking(models.Model):
             return False
 
         for move in self.move_ids:
-            for lot in move.lot_ids:
+            for line in move.move_line_ids:
+                lot = line.lot_id
                 if lot.product_id.product_tmpl_id.detailed_type == 'motorcycle':
                     self.env['motorcycle.registry'].create({"vin": lot.name})
 

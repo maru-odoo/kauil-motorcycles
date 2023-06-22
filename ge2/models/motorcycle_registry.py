@@ -16,6 +16,6 @@ class MotorcycleRegistry(models.Model):
 
     def _compute_lot_id(self):
         if len(self.lot_ids) > 0:
-            lot_id = self.lot_ids[0]
+            self.lot_id = self.lot_ids[0]
         else:
-            lot_id = False
+            self.lot_id = False

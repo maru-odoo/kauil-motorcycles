@@ -14,7 +14,7 @@ class Picking(models.Model):
             for line in move.move_line_ids:
                 lot = line.lot_id
 
-                if lot.product_id.product_tmpl_id.detailed_type == 'motorcycle' and self.location_dest_id == "stock.stock_location_customers":
+                if lot.product_id.product_tmpl_id.detailed_type == 'motorcycle' and self.location_dest_id == self.env.ref("stock.stock_location_customers"):
                     if self.origin:
                         records = self.env['sale.order'].search([('name', '=', self.origin)], limit=1)
                         sale_order = records[0].id if len(records) > 0 else False

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- TODO: Figure out why this doesn't work D: -->
+    <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Quotations</t>
+                <t t-set="url" t-value="'/my/quotes'"/>
+                <t t-set="placeholder_count">0</t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_registrations" name="My Registrations">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Registrations</t> 
+            </t>
+            <h1>Registrations here!</h1>
+        </t>
+    </template>
+
+    <template id="portal_my_registration" name="My Registration">
+        <t t-call="portal.portal_layout">
+            <h1>Registration here!</h1>
+            <span t-field="registration.vin"/>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_order_form_inherit_new_customer">
+            <field name="name">sale.oder.form.inherit.new.customer</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="is_new_customer"/>
+                    <button class="btn-primary" type="object" name="motorcycle_apply_discount_button" string="Apply Discount" 
+                            attrs="{'invisible':[('is_new_customer','!=', True)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -16,6 +16,7 @@
             <field name="battery_capacity">xl</field>
             <field name="charge_time">2.7</field>
             <field name="range">187</field>
+            <field name="categ_id" ref="product.product_category_motorcycles"/>
         </record>
         <record id="motorcycle_02" model="product.template">
             <field name="detailed_type">motorcycle</field>
@@ -32,6 +33,7 @@
             <field name="battery_capacity">xs</field>
             <field name="charge_time">5.8</field>
             <field name="range">68</field>
+            <field name="categ_id" ref="product.product_category_motorcycles"/>
         </record>
         <record id="motorcycle_03" model="product.template">
             <field name="detailed_type">motorcycle</field> 
@@ -47,6 +49,7 @@
             <field name="battery_capacity">xl</field>
             <field name="charge_time">2.7</field>
             <field name="range">180</field>
+            <field name="categ_id" ref="product.product_category_motorcycles"/>
         </record>
     </data>
 </odoo>      

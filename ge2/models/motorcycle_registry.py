@@ -9,7 +9,7 @@ class MotorcycleRegistry(models.Model):
     lot_id = fields.Many2one("stock.lot", compute="_compute_lot_id")
     sale_order_id = fields.Many2one("sale.order")
 
-    vin = fields.Char(string='VIN', required=True, related="lot_id.name")
+    # vin = fields.Char(string='VIN', related="lot_id.name", required=False)
     owner_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict", related="sale_order_id.partner_id")
 
     @api.constrains("lot_ids")

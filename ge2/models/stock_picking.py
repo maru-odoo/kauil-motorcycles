@@ -5,10 +5,9 @@ class Picking(models.Model):
     _inherit = "stock.picking"
 
     def button_validate(self):
-        if not super(Picking, self).button_validate():
+        res = super(Picking, self).button_validate()
+        if not res:
             return False
-
-        print(self.location_dest_id)
 
         for move in self.move_ids:
             for line in move.move_line_ids:
@@ -21,6 +20,6 @@ class Picking(models.Model):
                     else:
                         sale_order = False
 
-                    self.env['motorcycle.registry'].create({"vin": lot.name, "sale_order_id": sale_order})
+                    self.env['motorcycle.registry'].create({"lot_ids": lot, "vin": lot.name, "sale_order_id": sale_order})
 
-        return True
+        return res

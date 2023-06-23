@@ -1,5 +1,5 @@
 {
-    "name": "testMotorcycle Registry Enhancements",
+    "name": "Motorcycle Registry Enhancements",
     "license": "OPL-1",
     "depends": ["motorcycle_registry", "sale_management"],
     "category": "Kauil/Registry",

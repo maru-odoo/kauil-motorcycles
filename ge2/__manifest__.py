@@ -1,7 +1,7 @@
 {
     "name": "testMotorcycle Registry Enhancements",
     "license": "OPL-1",
-    "depends": ["motorcycle_registry"],
+    "depends": ["motorcycle_registry", "sale_management"],
     "category": "Kauil/Registry",
     "data": [
         "views/stock_lot_inherit.xml",

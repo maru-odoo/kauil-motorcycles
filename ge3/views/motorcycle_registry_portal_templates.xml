@@ -50,8 +50,12 @@
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-if="registration">
-                <h1>Registration here!</h1>
                 <span t-field="registration.vin"/>
+                <span t-field="registration.brand"/>
+                <span t-field="registration.make"/>
+                <span t-field="registration.model"/>
+                <span t-field="registration.license_plate"/>
+                <span t-field="registration.owner_id.display_name"/>
             </t>
             <t t-else="">Registration not found.</t>
         </t>

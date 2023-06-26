@@ -13,7 +13,6 @@
                             <separator string="Motorcycle Information"/>
                             <field name="registry_date"/>
                             <field name="vin"/>
-                            <field name="brand"/>
                             <field name="make"/>
                             <field name="model"/>
                             <field name="current_mileage"/>
@@ -46,7 +45,6 @@
             <tree string="Registry List">
                 <field name="registry_number"/>
                 <field name="vin"/>
-                <field name="brand"/>
                 <field name="make"/>
                 <field name="model"/>
                 <field name="license_plate"/>

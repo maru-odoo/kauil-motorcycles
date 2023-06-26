@@ -1,18 +1,24 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python",
+            "name": "Python: Remote Attach",
             "type": "python",
-            "request": "launch",
-            "stopOnEntry": false,
-            "python": "/home/maru/src/repos/odoo/odoo/venv/bin/python",
-            "program": "/home/maru/src/repos/odoo/odoo/odoo-bin",
-            "args": [
-                "--addons-path=/home/maru/src/repos/odoo/enterprise,/home/maru/src/repos/odoo/user,/home/maru/src/repos/odoo/kauil-motorcycles,/home/maru/src/repos/odoo/odoo/addons",
-                "-d motor",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": ".",
+                    "remoteRoot": "~/odoo"
+                }
             ],
-            "cwd": "${workspaceRoot}",
+            "justMyCode": true
         }
     ]
 }

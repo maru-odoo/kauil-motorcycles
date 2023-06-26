@@ -1,8 +1,8 @@
 {
-    "name": "Vin For Invoice",
+    "name": "Motorcycle Registry Invoice",
     "license": "OPL-1",
     "depends": ["motorcycle_registry"],
     "category": "Kauil/Registry",
-    "data":["views/invoice_inherit.xml"],
+    "data":["views/account_move_inherit.xml"],
     "auto_install": True,
 }

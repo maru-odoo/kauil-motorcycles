@@ -5,6 +5,12 @@ from odoo.addons.portal.controllers import portal
 
 class MotorcycleRegistryPortal(portal.CustomerPortal):
 
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        values['registration_count'] = request.env['motorcycle.registry'].search_count([])
+
+        return values
+
     def _get_registry_searchbar_sortings(self):
         return {
             'registry_number': {'label': _('Registry #'), 'order': 'registry_number'},

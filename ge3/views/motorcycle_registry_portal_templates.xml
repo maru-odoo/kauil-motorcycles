@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- TODO: Figure out why this doesn't work D: -->
     <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="35">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Registrations</t>
                 <t t-set="url" t-value="'/my/registrations'"/>
+                <t t-set="placeholder_count" t-value="'registration_count'"/>
             </t>
         </xpath>
     </template>

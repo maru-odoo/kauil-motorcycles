@@ -5,6 +5,7 @@
     "category": "Kauil/Registry",
     "data": [
         'views/repair_order_views.xml',
+        'views/motorcycle_registry_inherit_smart_button.xml',
     ],
     "auto_install": True,
 }

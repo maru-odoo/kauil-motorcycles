@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- TODO: Figure out why this doesn't work D: -->
-    <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="30">
+    <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="35">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Quotations</t>
-                <t t-set="url" t-value="'/my/quotes'"/>
-                <t t-set="placeholder_count">0</t>
+                <t t-set="title">Registrations</t>
+                <t t-set="url" t-value="'/my/registrations'"/>
             </t>
         </xpath>
     </template>
@@ -18,14 +17,43 @@
             <t t-call="portal.portal_searchbar">
                 <t t-set="title">Registrations</t> 
             </t>
-            <h1>Registrations here!</h1>
+            <t t-if="registrations" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Registry #</th>
+                        <th>VIN</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>License Plate</th>
+                        <th>Customer</th>
+                    </tr>
+                </thead>
+                <t t-foreach="registrations" t-as="registration">
+                    <tr>
+                        <td><a t-att-href="registration.get_portal_url()"><t t-out="registration.registry_number"/></a></td>
+                        <td><t t-out="registration.vin"/></td>
+                        <td><t t-out="registration.brand"/></td>
+                        <td><t t-out="registration.make"/></td>
+                        <td><t t-out="registration.model"/></td>
+                        <td><t t-out="registration.license_plate"/></td>
+                        <td><t t-out="registration.owner_id.display_name"/></td>
+                    </tr>
+                </t>
+            </t>
+            <p t-else="">There are currently no registrations for your account.</p>
         </t>
     </template>
 
     <template id="portal_my_registration" name="My Registration">
         <t t-call="portal.portal_layout">
-            <h1>Registration here!</h1>
-            <span t-field="registration.vin"/>
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-if="registration">
+                <h1>Registration here!</h1>
+                <span t-field="registration.vin"/>
+            </t>
+            <t t-else="">Registration not found.</t>
         </t>
     </template>
 </odoo>

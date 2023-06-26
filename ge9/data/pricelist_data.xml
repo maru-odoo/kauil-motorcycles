@@ -13,5 +13,6 @@
             <field name="price_discount">0</field>
             <field name="currency_id" ref="base.USD"/>
         </record>
+
     </data>
 </odoo>

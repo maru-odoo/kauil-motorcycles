@@ -6,8 +6,8 @@
             <field name="model">motorcycle.registry</field>
             <field name="inherit_id" ref="motorcycle_registry.motorcycle_registry_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//sheet//field[@name='license_plate']" position="after">
-                <div name="button_box" position="inside">
+                <xpath expr="//notebook" position="before">
+                <div class="oe_button_box" name="button_box">
                     <button string="Repair Orders" name="action_view_repairs" type="object" class="oe_primary_button"/>
                 </div>
                 </xpath>

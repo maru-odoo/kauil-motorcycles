@@ -9,7 +9,7 @@
                 <xpath expr="//sheet//field[@name='schedule_date']" position="before">
                     <field name="vin"/>
                     <field name="mileage"/>
-                    <field name="registry_id"/> 
+                    <field name="registry_id"/>
                 </xpath>
             </field>
         </record>

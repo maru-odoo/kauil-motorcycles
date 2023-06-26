@@ -6,7 +6,10 @@ class RepairOrder(models.Model):
     vin = fields.Char(string="VIN")
     mileage = fields.Float(string="Mileage")
     registry_id = fields.Many2one(comodel_name="motorcycle.registry", compute="_compute_from_vin", store=True)
-    #registry_id = fields.Char("Registry ID", compute="_compute_from_vin")
+    partner_id = fields.Many2one(relation="registry_id")
+    sale_order_id = fields.Many2one(relation="registry_id")
+    product_id = fields.Many2one(relation="registry_id")
+    
 
     @api.depends('vin')
     def _compute_from_vin(self):

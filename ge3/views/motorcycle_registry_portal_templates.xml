@@ -53,7 +53,7 @@
                     </tr>
                 </t>
             </t>
-            <p t-else="">There are currently no registrations for your account.</p>
+            <p t-else="">No registrations found.</p>
         </t>
     </template>
 

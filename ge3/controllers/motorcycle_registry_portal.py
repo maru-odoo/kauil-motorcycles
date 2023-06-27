@@ -27,9 +27,9 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
         if search_in in ('name', 'all'):
             search_domain = OR([search_domain, [('owner_id.display_name', 'ilike', search)]])
         if search_in in ('state', 'all'):
-            search_domain = OR([search_domain, [('owner_id.state_id.display_name', 'ilike', search)]])
+            search_domain = OR([search_domain, [('rider_state_name', 'ilike', search)]])
         if search_in in ('country', 'all'):
-            search_domain = OR([search_domain, [('owner_id.country_id.display_name', 'ilike', search)]])
+            search_domain = OR([search_domain, [('rider_country_name', 'ilike', search)]])
         if search_in in ('make', 'all'):
             search_domain = OR([search_domain, [('brand', 'ilike', search)]])
         if search_in in ('model', 'all'):
@@ -90,6 +90,7 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
                 "searchbar_sortings": searchbar_sortings,
                 "searchbar_inputs": searchbar_inputs,
                 "sortby": sortby,
+                "search": search,
                 "search_in": search_in,
                 "page_name": "registrations",
             }

@@ -7,7 +7,7 @@
                 <t t-else="">Registrations</t>
             </li>
             <li t-if="page_name == 'registration'" class="breadcrumb-item active">
-                Registry <span t-out="registration.registry_number"/>
+                Registry <span t-if="registration" t-out="registration.registry_number"/><span t-else="">Missing</span>
             </li>
         </xpath>
     </template>
@@ -92,7 +92,7 @@
                                     <strong>Year:</strong>
                                     <span t-field="registration.model"/>
                                 </div>
-                                <t t-if="registration.owner_id">
+                                <div t-if="registration.owner_id" class="mb-3">
                                     <h3>Owner</h3> 
                                     <div t-if="registration.owner_id.display_name">
                                         <strong>Name:</strong>
@@ -110,18 +110,18 @@
                                         <strong>Email:</strong>
                                         <span t-field="registration.owner_email"/>
                                     </div>
-                                    <div t-if="registration.owner_phone" class="mb-3">
+                                    <div t-if="registration.owner_phone">
                                         <strong>Phone:</strong>
                                         <span t-field="registration.owner_phone"/>
                                     </div>
-                                </t>
+                                </div>
                             </div>
                             <div class="col">
                                 <img t-if="registration.lot_id.product_id.image_256" class="mb-3 d-block mx-auto rounded" t-attf-src="data:image/png;base64,{{ registration.lot_id.product_id.image_256 }}"/>
                             </div>
                         </div>
 
-                        <section>
+                        <section t-if="owner">
                             <h3>Owner Fields</h3>
                             <form method="post" t-attf-action="{{ registration.get_portal_url() + '/update' }}">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -135,7 +135,7 @@
                                         <input id="public" type="checkbox" name="public" checked=""/>
                                     </t>
                                     <t t-else="">
-                                        <input id="public" type="checkbox"/>
+                                        <input id="public" type="checkbox" name="public"/>
                                     </t>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save</button>

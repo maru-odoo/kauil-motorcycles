@@ -1,7 +1,7 @@
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.portal.controllers import portal
-from odoo.osv.expression import OR
+from odoo.osv.expression import OR, AND
 
 
 class MotorcycleRegistryPortal(portal.CustomerPortal):
@@ -46,6 +46,12 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
 
     @http.route('/my/registrations/<int:id>/update', type='http', auth='user', website=True)
     def portal_my_registrations_update(self, **kwargs):
+        registration_id = kwargs.get("id")
+        registration = request.env['motorcycle.registry'].browse([registration_id])
+        if not registration.read() or registration.owner_id != request.uid:
+            # Invalid resource
+            return request.redirect(f"/my/registrations/{id}")
+
         try:
             current_mileage = float(kwargs.get("current_mileage", 0))
             public = True if kwargs.get("public") == "on" else False
@@ -64,13 +70,18 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
         registration_id = kwargs.get("id")
         if registration_id:
             registration = request.env['motorcycle.registry'].browse([registration_id])
-            if not registration.read():
+            if not registration.read() or (not registration.public and registration.owner_id != request.uid):
+                # Invalid resource
                 registration = False
+                owner = False
+            else:
+                owner = registration.owner_id == request.uid
 
             values = {
                 "registration": registration,
                 "default_url": "/my/registrations",
                 "page_name": "registration",
+                "owner": owner,
             }
 
             return request.render("ge3.portal_my_registration", values)
@@ -81,7 +92,9 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             search_in = kwargs.get("search_in", "all")
             search = kwargs.get("search", "")
 
-            domain = self._get_search_domain(search_in, search)
+            search_domain = self._get_search_domain(search_in, search)
+            visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request.uid)]
+            domain = AND([search_domain, visible_domain])
             registrations = request.env['motorcycle.registry'].search(domain)
 
             values = {

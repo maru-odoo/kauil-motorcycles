@@ -24,6 +24,8 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
         registration_id = kwargs.get("id")
         if registration_id:
             registration = request.env['motorcycle.registry'].browse([registration_id])
+            if not registration.read():
+                registration = False
 
             values = {
                 "registration": registration,

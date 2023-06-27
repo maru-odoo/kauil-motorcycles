@@ -49,13 +49,91 @@
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Registrations</t> 
+            </t>
             <t t-if="registration">
-                <span t-field="registration.vin"/>
+                <!-- <span t-field="registration.vin"/>
                 <span t-field="registration.brand"/>
                 <span t-field="registration.make"/>
                 <span t-field="registration.model"/>
                 <span t-field="registration.license_plate"/>
-                <span t-field="registration.owner_id.display_name"/>
+                <span t-field="registration.owner_id.display_name"/> -->
+
+                <div id="introduction" class="pb-2 pt-3 card-header bg-white">
+                    <h2 class="my-0">
+                        Registry <t t-out="registration.registry_number"/>
+                    </h2>
+                </div>
+
+                <div class="card-body">
+                    <div id="informations" class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3" >
+                                    <strong>VIN:</strong>
+                                    <span t-field="registration.vin"/>
+                                </div>
+                                <t t-if="registration.license_plate">
+                                    <div class="mb-3" >
+                                        <strong>License Plate:</strong>
+                                        <span t-field="registration.license_plate"/>
+                                    </div>
+                                </t>
+                                <div>
+                                    <strong>Make:</strong>
+                                    <span t-field="registration.brand"/>
+                                </div>
+                                <div>
+                                    <strong>Model:</strong>
+                                    <span t-field="registration.make"/>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Year:</strong>
+                                    <span t-field="registration.model"/>
+                                </div>
+                                <t t-if="registration.owner_id">
+                                    <h3>Owner</h3> 
+                                    <div t-if="registration.owner_id.display_name">
+                                        <strong>Name:</strong>
+                                        <span t-field="registration.owner_id.display_name"/>
+                                    </div>
+                                    <div t-if="registration.owner_id.country_id">
+                                        <strong>Country:</strong>
+                                        <span t-field="registration.owner_id.country_id"/>
+                                    </div>
+                                    <div t-if="registration.owner_id.state_id">
+                                        <strong>State:</strong>
+                                        <span t-field="registration.owner_id.state_id"/>
+                                    </div>
+                                    <div t-if="registration.owner_email">
+                                        <strong>Email:</strong>
+                                        <span t-field="registration.owner_email"/>
+                                    </div>
+                                    <div t-if="registration.owner_phone" class="mb-3">
+                                        <strong>Phone:</strong>
+                                        <span t-field="registration.owner_phone"/>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="col">
+                                <img t-if="registration.lot_id.product_id.image_256" class="mb-3 d-block mx-auto rounded" t-attf-src="data:image/png;base64,{{ registration.lot_id.product_id.image_256 }}"/>
+                            </div>
+                        </div>
+
+                        <section>
+                            <h3>Editable Fields</h3>
+                            <div>
+                                <strong>Current Mileage:</strong>
+                                <span t-field="registration.current_mileage"/>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Public:</strong>
+                                <input type="checkbox"/>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </t>
             <t t-else="">Registration not found.</t>
         </t>

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="portal_my_home_menu_motorcycle_registry" name="Show Registration Breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'registrations' or page_name == 'registration'" t-attf-class="breadcrumb-item #{'active' if page_name == 'registrations' else ''}">
+                <a t-if="page_name == 'registration'" t-attf-href="/my/registrations">Registrations</a>
+                <t t-else="">Registrations</t>
+            </li>
+            <li t-if="page_name == 'registration'" class="breadcrumb-item active">
+                Registry <span t-out="registration.registry_number"/>
+            </li>
+        </xpath>
+    </template>
+
     <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="35">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
@@ -47,20 +59,8 @@
 
     <template id="portal_my_registration" name="My Registration">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="True"/>
-
-            <t t-call="portal.portal_searchbar">
-                <t t-set="title">Registrations</t> 
-            </t>
             <t t-if="registration">
-                <!-- <span t-field="registration.vin"/>
-                <span t-field="registration.brand"/>
-                <span t-field="registration.make"/>
-                <span t-field="registration.model"/>
-                <span t-field="registration.license_plate"/>
-                <span t-field="registration.owner_id.display_name"/> -->
-
-                <div id="introduction" class="pb-2 pt-3 card-header bg-white">
+                <div id="introduction" class="pb-2 pt-3 mt-2 card-header bg-white">
                     <h2 class="my-0">
                         Registry <t t-out="registration.registry_number"/>
                     </h2>

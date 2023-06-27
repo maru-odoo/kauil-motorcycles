@@ -1,6 +1,7 @@
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.portal.controllers import portal
+from odoo.osv.expression import OR
 
 
 class MotorcycleRegistryPortal(portal.CustomerPortal):
@@ -10,6 +11,30 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
         values['registration_count'] = request.env['motorcycle.registry'].search_count([])
 
         return values
+
+    def _get_registry_searchbar_inputs(self):
+        return {
+            'all': {'input': 'all', 'label': _('Search in All')},
+            'name': {'input': 'name', 'label': _('Search in Rider Name')},
+            'state': {'input': 'state', 'label': _('Search in Rider State')},
+            'country': {'input': 'country', 'label': _('Search in Rider Country')},
+            'make': {'input': 'make', 'label': _('Search in Motorcycle Make')},
+            'model': {'input': 'model', 'label': _('Search in Motorcycle Model')},
+        }
+
+    def _get_search_domain(self, search_in, search):
+        search_domain = []
+        if search_in in ('name', 'all'):
+            search_domain = OR([search_domain, [('owner_id.display_name', 'ilike', search)]])
+        if search_in in ('state', 'all'):
+            search_domain = OR([search_domain, [('owner_id.state_id.display_name', 'ilike', search)]])
+        if search_in in ('country', 'all'):
+            search_domain = OR([search_domain, [('owner_id.country_id.display_name', 'ilike', search)]])
+        if search_in in ('make', 'all'):
+            search_domain = OR([search_domain, [('brand', 'ilike', search)]])
+        if search_in in ('model', 'all'):
+            search_domain = OR([search_domain, [('make', 'ilike', search)]])
+        return search_domain
 
     def _get_registry_searchbar_sortings(self):
         return {
@@ -45,19 +70,28 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             values = {
                 "registration": registration,
                 "default_url": "/my/registrations",
+                "page_name": "registration",
             }
 
             return request.render("ge3.portal_my_registration", values)
         else:
-            registrations = request.env['motorcycle.registry'].search([])
             searchbar_sortings = self._get_registry_searchbar_sortings()
+            searchbar_inputs = self._get_registry_searchbar_inputs()
             sortby = kwargs.get("sortby", "registry_number")
+            search_in = kwargs.get("search_in", "all")
+            search = kwargs.get("search", "")
+
+            domain = self._get_search_domain(search_in, search)
+            registrations = request.env['motorcycle.registry'].search(domain)
 
             values = {
                 "registrations": registrations,
                 "default_url": "/my/registrations",
                 "searchbar_sortings": searchbar_sortings,
+                "searchbar_inputs": searchbar_inputs,
                 "sortby": sortby,
+                "search_in": search_in,
+                "page_name": "registrations",
             }
 
             return request.render("ge3.portal_my_registrations", values)

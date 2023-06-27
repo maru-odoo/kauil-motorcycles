@@ -19,6 +19,21 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             'model': {'model': _('Model'), 'order': 'model'},
         }
 
+    @http.route('/my/registrations/<int:id>/update', type='http', auth='user', website=True)
+    def portal_my_registrations_update(self, **kwargs):
+        try:
+            current_mileage = float(kwargs.get("current_mileage", 0))
+            public = True if kwargs.get("public") == "on" else False
+        except ValueError:
+            # An invalid value was received in the request, so exit early
+            return request.redirect(f"/my/registrations/{id}")
+
+        id = kwargs.get('id')
+        values = {"current_mileage": current_mileage, "public": public}
+        request.env['motorcycle.registry'].browse(id).write(values)
+
+        return request.redirect(f"/my/registrations/{id}")
+
     @http.route(['/my/registrations', '/my/registrations/<int:id>'], type='http', auth='user', website=True)
     def portal_my_registrations(self, **kwargs):
         registration_id = kwargs.get("id")

@@ -122,15 +122,24 @@
                         </div>
 
                         <section>
-                            <h3>Editable Fields</h3>
-                            <div>
-                                <strong>Current Mileage:</strong>
-                                <span t-field="registration.current_mileage"/>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Public:</strong>
-                                <input type="checkbox"/>
-                            </div>
+                            <h3>Owner Fields</h3>
+                            <form method="post" t-attf-action="{{ registration.get_portal_url() + '/update' }}">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="form-group">
+                                    <label for="current_mileage">Current Mileage:</label>
+                                    <input id="current_mileage" type="number" name="current_mileage" t-attf-value="{{ registration.current_mileage }}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="public">Public:</label>
+                                    <t t-if="registration.public">
+                                        <input id="public" type="checkbox" name="public" checked=""/>
+                                    </t>
+                                    <t t-else="">
+                                        <input id="public" type="checkbox"/>
+                                    </t>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
                         </section>
                     </div>
                 </div>

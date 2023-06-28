@@ -8,7 +8,10 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
 
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-        values['registration_count'] = request.env['motorcycle.registry'].search_count([])
+
+        request_id = request.env.context.get("uid")
+        visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request_id)]
+        values['registration_count'] = request.env['motorcycle.registry'].search_count(visible_domain)
 
         return values
 
@@ -47,8 +50,10 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
     @http.route('/my/registrations/<int:id>/update', type='http', auth='user', website=True)
     def portal_my_registrations_update(self, **kwargs):
         registration_id = kwargs.get("id")
+        request_id = request.env.context.get("uid")
+
         registration = request.env['motorcycle.registry'].browse([registration_id])
-        if not registration.read() or registration.owner_id != request.uid:
+        if not registration.read() or registration.owner_id != request_id:
             # Invalid resource
             return request.redirect(f"/my/registrations/{id}")
 
@@ -68,14 +73,16 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
     @http.route(['/my/registrations', '/my/registrations/<int:id>'], type='http', auth='user', website=True)
     def portal_my_registrations(self, **kwargs):
         registration_id = kwargs.get("id")
+        request_id = request.env.context.get("uid")
+
         if registration_id:
             registration = request.env['motorcycle.registry'].browse([registration_id])
-            if not registration.read() or (not registration.public and registration.owner_id != request.uid):
+            if not registration.read() or (not registration.public and registration.owner_id != request_id):
                 # Invalid resource
                 registration = False
                 owner = False
             else:
-                owner = registration.owner_id == request.uid
+                owner = registration.owner_id == request_id
 
             values = {
                 "registration": registration,
@@ -93,7 +100,7 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             search = kwargs.get("search", "")
 
             search_domain = self._get_search_domain(search_in, search)
-            visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request.uid)]
+            visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request_id)]
             domain = AND([search_domain, visible_domain])
             registrations = request.env['motorcycle.registry'].search(domain)
 

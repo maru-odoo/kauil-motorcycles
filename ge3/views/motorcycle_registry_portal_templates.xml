@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="portal_my_home_menu_motorcycle_registry" name="Show Registration Breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'registrations' or page_name == 'registration'" t-attf-class="breadcrumb-item #{'active' if page_name == 'registrations' else ''}">
+                <a t-if="page_name == 'registration'" t-attf-href="/my/registrations">Registrations</a>
+                <t t-else="">Registrations</t>
+            </li>
+            <li t-if="page_name == 'registration'" class="breadcrumb-item active">
+                Registry <span t-if="registration" t-out="registration.registry_number"/><span t-else="">Missing</span>
+            </li>
+        </xpath>
+    </template>
+
     <template id="portal_my_home_motorcycle_registry" name="Show Registrations" customize_show="True" inherit_id="portal.portal_my_home" priority="35">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
@@ -41,21 +53,96 @@
                     </tr>
                 </t>
             </t>
-            <p t-else="">There are currently no registrations for your account.</p>
+            <p t-else="">No registrations found.</p>
         </t>
     </template>
 
     <template id="portal_my_registration" name="My Registration">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="True"/>
-
             <t t-if="registration">
-                <span t-field="registration.vin"/>
-                <span t-field="registration.brand"/>
-                <span t-field="registration.make"/>
-                <span t-field="registration.model"/>
-                <span t-field="registration.license_plate"/>
-                <span t-field="registration.owner_id.display_name"/>
+                <div id="introduction" class="pb-2 pt-3 mt-2 card-header bg-white">
+                    <h2 class="my-0">
+                        Registry <t t-out="registration.registry_number"/>
+                    </h2>
+                </div>
+
+                <div class="card-body">
+                    <div id="informations" class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3" >
+                                    <strong>VIN:</strong>
+                                    <span t-field="registration.vin"/>
+                                </div>
+                                <t t-if="registration.license_plate">
+                                    <div class="mb-3" >
+                                        <strong>License Plate:</strong>
+                                        <span t-field="registration.license_plate"/>
+                                    </div>
+                                </t>
+                                <div>
+                                    <strong>Make:</strong>
+                                    <span t-field="registration.brand"/>
+                                </div>
+                                <div>
+                                    <strong>Model:</strong>
+                                    <span t-field="registration.make"/>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Year:</strong>
+                                    <span t-field="registration.model"/>
+                                </div>
+                                <div t-if="registration.owner_id" class="mb-3">
+                                    <h3>Owner</h3> 
+                                    <div t-if="registration.owner_id.display_name">
+                                        <strong>Name:</strong>
+                                        <span t-field="registration.owner_id.display_name"/>
+                                    </div>
+                                    <div t-if="registration.owner_id.country_id">
+                                        <strong>Country:</strong>
+                                        <span t-field="registration.owner_id.country_id"/>
+                                    </div>
+                                    <div t-if="registration.owner_id.state_id">
+                                        <strong>State:</strong>
+                                        <span t-field="registration.owner_id.state_id"/>
+                                    </div>
+                                    <div t-if="registration.owner_email">
+                                        <strong>Email:</strong>
+                                        <span t-field="registration.owner_email"/>
+                                    </div>
+                                    <div t-if="registration.owner_phone">
+                                        <strong>Phone:</strong>
+                                        <span t-field="registration.owner_phone"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <img t-if="registration.lot_id.product_id.image_256" class="mb-3 d-block mx-auto rounded" t-attf-src="data:image/png;base64,{{ registration.lot_id.product_id.image_256 }}"/>
+                            </div>
+                        </div>
+
+                        <section t-if="owner">
+                            <h3>Owner Fields</h3>
+                            <form method="post" t-attf-action="{{ registration.get_portal_url() + '/update' }}">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="form-group">
+                                    <label for="current_mileage">Current Mileage:</label>
+                                    <input id="current_mileage" type="number" name="current_mileage" t-attf-value="{{ registration.current_mileage }}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="public">Public:</label>
+                                    <t t-if="registration.public">
+                                        <input id="public" type="checkbox" name="public" checked=""/>
+                                    </t>
+                                    <t t-else="">
+                                        <input id="public" type="checkbox" name="public"/>
+                                    </t>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </section>
+                    </div>
+                </div>
             </t>
             <t t-else="">Registration not found.</t>
         </t>

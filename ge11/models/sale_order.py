@@ -8,8 +8,8 @@ class SaleOrder(models.Model):
 
     @api.depends('partner_id')
     def _compute_warehouse_id(self):
-        west_states = ["ND","SD","NE","KS","OK","TX","MT","WY","CO","NM","ID","UT","AZ","NV","WA","OR","CA"]
-        east_states = ["ME","VT","NH","MA","CT","RI","NJ","MD","DE","NY","PA","OH","MI","IN","IL","WI","VA","WV","NC","KY","TN","SC","GA","AL","MS","FL","MN","IA","MO","AR", "LA"]
+        west_states = {"ND","SD","NE","KS","OK","TX","MT","WY","CO","NM","ID","UT","AZ","NV","WA","OR","CA"}
+        east_states = {"ME","VT","NH","MA","CT","RI","NJ","MD","DE","NY","PA","OH","MI","IN","IL","WI","VA","WV","NC","KY","TN","SC","GA","AL","MS","FL","MN","IA","MO","AR", "LA"}
 
         for order in self:
             #print(order.partner_id.read())

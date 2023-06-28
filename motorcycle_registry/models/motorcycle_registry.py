@@ -32,6 +32,7 @@ class MotorcycleRegistry(models.Model):
     brand = fields.Char(compute='_compute_from_vin')
     make = fields.Char(compute='_compute_from_vin')
     model = fields.Char(compute='_compute_from_vin')
+    brand = fields.Char(compute='_compute_from_vin')
 
     # This method works, but it's better to filter the recordset before iterating over it, like in the example below                
     # @api.constrains('license_plate')

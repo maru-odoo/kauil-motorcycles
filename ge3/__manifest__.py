@@ -1,10 +1,9 @@
 {
     "name": "Motorcycle Registry Portal",
     "license": "OPL-1",
-    "depends": ["motorcycle_registry", "portal"],
+    "depends": ["portal", "motorcycle_registry"],
     "category": "Kauil/Registry",
     "data": [
-        "security/motorcycle_registry_groups.xml",
         "security/ir.model.access.csv",
         "views/motorcycle_registry_portal_templates.xml",
     ],

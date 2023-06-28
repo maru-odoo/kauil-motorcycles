@@ -6,7 +6,7 @@ class MotorcycleRegistry(models.Model):
     _inherit = "motorcycle.registry"
 
     lot_ids = fields.One2many("stock.lot", inverse_name="registry_id")
-    lot_id = fields.Many2one("stock.lot", compute="_compute_lot_id")
+    lot_id = fields.Many2one("stock.lot", compute="_compute_lot_id", store=True)
     sale_order_id = fields.Many2one("sale.order", ondelete="restrict")
 
     vin = fields.Char(string='VIN', related="lot_id.name", required=False)

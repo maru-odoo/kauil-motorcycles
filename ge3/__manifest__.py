@@ -4,6 +4,7 @@
     "depends": ["motorcycle_registry", "portal"],
     "category": "Kauil/Registry",
     "data": [
+        "security/motorcycle_registry_groups.xml",
         "security/ir.model.access.csv",
         "views/motorcycle_registry_portal_templates.xml",
     ],

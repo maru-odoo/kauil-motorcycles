@@ -6,11 +6,16 @@ from odoo.osv.expression import OR, AND
 
 class MotorcycleRegistryPortal(portal.CustomerPortal):
 
+    def _get_partner_id(self):
+        user_id = request.env.context.get("uid")
+        partner_id = request.env["res.users"].browse([user_id]).partner_id
+
+        return partner_id.id
+
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
 
-        request_id = request.env.context.get("uid")
-        visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request_id)]
+        visible_domain = self._get_visible_domain()
         values['registration_count'] = request.env['motorcycle.registry'].search_count(visible_domain)
 
         return values
@@ -24,6 +29,12 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             'make': {'input': 'make', 'label': _('Search in Motorcycle Make')},
             'model': {'input': 'model', 'label': _('Search in Motorcycle Model')},
         }
+
+    def _get_visible_domain(self):
+        partner_id = self._get_partner_id()
+        visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', partner_id)]
+
+        return visible_domain
 
     def _get_search_domain(self, search_in, search):
         search_domain = []
@@ -50,10 +61,10 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
     @http.route('/my/registrations/<int:id>/update', type='http', auth='user', website=True)
     def portal_my_registrations_update(self, **kwargs):
         registration_id = kwargs.get("id")
-        request_id = request.env.context.get("uid")
+        partner_id = self._get_partner_id()
 
         registration = request.env['motorcycle.registry'].browse([registration_id])
-        if not registration.read() or registration.owner_id != request_id:
+        if not registration.read() or registration.owner_id.id != partner_id:
             # Invalid resource
             return request.redirect(f"/my/registrations/{id}")
 
@@ -73,16 +84,16 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
     @http.route(['/my/registrations', '/my/registrations/<int:id>'], type='http', auth='user', website=True)
     def portal_my_registrations(self, **kwargs):
         registration_id = kwargs.get("id")
-        request_id = request.env.context.get("uid")
+        partner_id = self._get_partner_id()
 
         if registration_id:
             registration = request.env['motorcycle.registry'].browse([registration_id])
-            if not registration.read() or (not registration.public and registration.owner_id != request_id):
+            if not registration.read() or (not registration.public and registration.owner_id.id != partner_id):
                 # Invalid resource
                 registration = False
                 owner = False
             else:
-                owner = registration.owner_id == request_id
+                owner = registration.owner_id.id == partner_id
 
             values = {
                 "registration": registration,
@@ -100,7 +111,7 @@ class MotorcycleRegistryPortal(portal.CustomerPortal):
             search = kwargs.get("search", "")
 
             search_domain = self._get_search_domain(search_in, search)
-            visible_domain = ['|', ('public', '=', 'True'), ('owner_id', '=', request_id)]
+            visible_domain = self._get_visible_domain()
             domain = AND([search_domain, visible_domain])
             registrations = request.env['motorcycle.registry'].search(domain)
 

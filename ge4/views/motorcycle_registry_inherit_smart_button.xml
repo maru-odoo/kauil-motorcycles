@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="motorcycle_registry_inherit_smart_button" model="ir.ui.view">
+            <field name="name">motorcycle.registry.inherit.smart.button</field>
+            <field name="model">motorcycle.registry</field>
+            <field name="inherit_id" ref="motorcycle_registry.motorcycle_registry_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button string="Repair Orders" name="action_view_repairs" type="object" class="oe_primary_button"/>
+                </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

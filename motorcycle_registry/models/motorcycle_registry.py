@@ -84,4 +84,3 @@ class MotorcycleRegistry(models.Model):
             registry.brand = False
             registry.make = False
             registry.model = False
-            registry.brand

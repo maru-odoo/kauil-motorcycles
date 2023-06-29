@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_mileage" name="Mileage">
+        <section class="s_mileage">
+            <div class="container">
+                <div class="col-md-12">
+                    <strong>Total mileage:</strong> <span id="mileage"/>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="external_snippets" inherit_id="website.snippets" priority="8">
+        <xpath expr="//div[@id='snippet_feature']//t[@t-snippet][last()]"  position="after">
+            <t t-snippet="ge5.s_mileage"/> 
+        </xpath>
+    </template>
+</odoo>
